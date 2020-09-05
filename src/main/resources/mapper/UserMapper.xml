@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chy.mapper.UserMapper">
+
+
+    <select id="queryUserByPn" resultType="User">
+        select * from user where PN = #{pn}
+    </select>
+    <select id="queryUserByName" resultType="User">
+        select * from user where userName = #{userName}
+    </select>
+    <select id="queryEmail" resultType="User">
+        select * from user where email = #{email}
+    </select>
+
+    <update id="putUserProjectID">
+        update user set projectID = #{projectID}
+        where userName = #{userName}
+    </update>
+
+    <update id="putUserName">
+        update user set userName = #{newName}
+        where userName = #{oldName}
+    </update>
+    <update id="putUserPn">
+        update user set PN = #{newPn}
+        where PN = #{oldPn}
+    </update>
+    <update id="putUserEmail">
+        update user set email = #{newEmail}
+        where email = #{oldEmail}
+    </update>
+    <update id="putUserPwd">
+        update user set pwd = #{newPwd}
+        where userName = #{userName}
+    </update>
+
+    <insert id="addUser" parameterType="User">
+        insert into user (userName, PN, pwd, email, userStatus)
+        values (#{userName}, #{pn}, #{pwd}, #{email}, #{userStatus})
+    </insert>
+</mapper>

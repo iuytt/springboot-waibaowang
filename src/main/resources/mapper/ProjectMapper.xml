@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chy.mapper.ProjectMapper">
+
+    <select id="countProjects" resultType="java.lang.Integer">
+        select count(*) from project
+        <where>
+            <if test="projectType != 42">
+                projectType = #{projectType}
+            </if>
+            <if test="projectState != 42">
+                and projectState = #{projectState}
+            </if>
+            <if test="recruit != 42">
+                and recruit = #{recruit}
+            </if>
+            <if test="projectName != null">
+                and projectName like "%"#{projectName}"%"
+            </if>
+        </where>
+    </select>
+    <select id="queryProjects" resultType="Project">
+        select * from project
+        <where>
+            <if test="projectType != 42">
+                projectType = #{projectType}
+            </if>
+            <if test="projectState != 42">
+                and projectState = #{projectState}
+            </if>
+            <if test="recruit != 42">
+                and recruit = #{recruit}
+            </if>
+            <if test="projectName != null">
+                and projectName like "%"#{projectName}"%"
+            </if>
+        </where>
+        <choose>
+            <when test="sort == 0">
+                order by time desc
+            </when>
+            <when test="sort == 1">
+                order by pay desc
+            </when>
+        </choose>
+        limit ${limit},${pSize}
+    </select>
+    <select id="queryProjectsByIssue" resultType="Project">
+        select * from project
+        where issue = #{issue}
+        <if test="projectState != 42">
+            and projectState = #{projectState}
+        </if>
+        <if test="projectName != null">
+            and projectName like "%"#{projectName}"%"
+        </if>
+        order by time desc;
+    </select>
+    <select id="queryProjectsByEmployee" resultType="Project">
+        select * from project
+        where employee like "%"#{employee}"%"
+        <if test="projectState != 42">
+            and projectState = #{projectState}
+        </if>
+        <if test="projectName != null">
+            and projectName like "%"#{projectName}"%"
+        </if>
+        order by time desc;
+    </select>
+    <select id="queryProjectsByID" resultType="Project">
+        select * from project
+        where projectID = #{projectID};
+    </select>
+
+    <insert id="addProject" parameterType="Project">
+        INSERT INTO project (projectName, issue, projectType, projectDetails, pay,
+            date, projectState, employee, recruit, time)
+        VALUES (#{projectName}, #{issue}, #{projectType}, #{projectDetails}, #{pay},
+            #{date}, #{projectState}, #{employee}, #{recruit}, #{time});
+    </insert>
+
+    <update id="putEmployee">
+        update project set employee = #{employee}
+        where projectID = #{projectID}
+    </update>
+    <update id="putProjectState">
+        update project set projectState = #{projectState}
+        where projectID = #{projectID}
+    </update>
+
+</mapper>
