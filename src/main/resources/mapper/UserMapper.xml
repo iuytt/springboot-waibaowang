@@ -38,7 +38,7 @@
     </update>
 
     <insert id="addUser" parameterType="User">
-        insert into user (userName, PN, pwd, email, userStatus)
-        values (#{userName}, #{pn}, #{pwd}, #{email}, #{userStatus})
+        insert into user
+        values (#{userName}, #{pn}, #{pwd}, #{email}, #{userStatus}, '')
     </insert>
 </mapper>

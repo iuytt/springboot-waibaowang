@@ -15,6 +15,8 @@ public class UserService {
     // 参与/创建/退出 project 时 user 表 projectID 更新
     public int putUserProjectID(long projectID, long pn, boolean flag) { // flag == true 增
         User user = userMapper.queryUserByPn(pn);
+        if (user.getUserStatus() == 1) return 0; // 需求方不更新
+
         String uProjectId = null;
         String userName = user.getUserName();
 
@@ -26,9 +28,8 @@ public class UserService {
             uProjectId = sbf.delete(i, i + Long.toString(projectID).length() + 1).toString();
         }
 
-        int i = userMapper.putUserProjectID(uProjectId, userName);
-
-        return i;
+        userMapper.putUserProjectID(uProjectId, userName);
+        return 1;
     }
 
 
